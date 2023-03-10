@@ -1,0 +1,3 @@
+Pentru graful de la laboratorul trecut algoritmul Bellman-Ford nu functioneaza cum trebuie
+
+Pentru graful nou Bellman-Ford detecteaza un arbore cu un cost mai mare decat Dijkstra

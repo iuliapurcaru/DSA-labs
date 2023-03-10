@@ -1,0 +1,152 @@
+#include <stdio.h>
+
+#define nNodes 10
+
+typedef struct edge
+{
+    int src, dest, weight;
+} EDGE;
+
+EDGE edges[] =
+{
+    {0, 2, 19}, {1, 2, 3}, {1, 3, 16}, {2, 8, 8}, {3, 6, 10}, {3, 7, 4}, {4, 5, 11}, {4, 9, 14}, {5, 8, 9}, {5, 9, 11}, {6, 8, 7}, {7, 9, 6}
+};
+
+int nEdges = sizeof(edges)/sizeof(edges[0]);
+
+EDGE spanlist[20];
+int nSpan;
+
+void init(int n, int a[][n])
+{
+    int i, j;
+
+    for(i = 0; i < n; i++)
+    {
+        for(j = 0; j < n; j++)
+        {
+            a[i][j] = 0;
+        }
+    }
+}
+
+void adj_matrix(int adj[][nNodes])
+{
+    int i, src, dest;
+
+    init(nNodes, adj);
+
+    for(i = 0; i < nEdges; i++)
+    {
+        src = edges[i].src;
+        dest = edges[i].dest;
+
+        adj[src][dest] = 1;
+        adj[dest][src] = 1;
+    }
+}
+
+void print_matrix(int n, int a[][n])
+{
+    int i, j;
+
+    printf("    ");
+    for(j = 0; j < n; j++)
+        printf("%d ", j);
+    printf("\n\n");
+
+    for(i = 0; i < n; i++)
+    {
+        printf("%d   ", i);
+        for(j = 0; j < n; j++)
+        {
+            printf("%d ", a[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void sort(EDGE e[], int n)
+{
+    int i, j;
+    EDGE temp;
+
+    for(i = 0; i < n-1; i++)
+    {
+        for(j = i+1; j <= n-1; j++)
+        {
+            if(e[i].weight > e[j].weight)
+            {
+                temp = e[i];
+                e[i] = e[j];
+                e[j] = temp;
+            }
+        }
+    }
+}
+
+void Union(int nodes[], int n1, int n2)
+{
+    int i;
+
+    for (i = 0; i < nNodes; i++)
+        if (nodes[i] == n2)
+            nodes[i] = n1;
+}
+
+void kruskal_alg()
+{
+    int i, node1, node2;
+    int nodes[nNodes];
+
+    sort(edges, nEdges);
+
+    for (i = 0; i < nNodes; i++)
+    {
+        nodes[i] = i;
+    }
+
+    nSpan = 0;
+
+    for (i = 0; i < nEdges; i++)
+    {
+        node1 = nodes[edges[i].src];
+        node2 = nodes[edges[i].dest];
+
+        if (node1 != node2)
+        {
+            spanlist[nSpan] = edges[i];
+            nSpan++;
+            Union(nodes, node1, node2);
+        }
+    }
+}
+
+void print_spanlist()
+{
+    int i, cost = 0;
+
+    printf("\nMinimum spanning tree:\n");
+    for (i = 0; i < nSpan; i++)
+    {
+        printf("%d - %d: %d\n", spanlist[i].src, spanlist[i].dest, spanlist[i].weight);
+        cost += spanlist[i].weight;
+    }
+    printf("Cost total: %d", cost);
+}
+
+int main()
+{
+
+    int adj_m[nNodes][nNodes];
+
+    adj_matrix(adj_m);
+
+    printf("Matricea de adiacenta a grafului:\n");
+    print_matrix(nNodes, adj_m);
+
+    kruskal_alg();
+    print_spanlist();
+    printf("\n");
+
+}

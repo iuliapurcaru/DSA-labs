@@ -1,0 +1,30 @@
+ingredients = (bread, ham, tomatoes, lettuce)
+i = 1
+
+WHILE i < 5
+	IF ingredients[i] missing
+		ADD ingredients[i] to grocery_list
+
+GET 1 slice of bread
+place 3 slices of ham on slice of bread
+place 3 slices of tomatoes on ham
+place 1 leaf of lettuce on tomatoes
+GET 1 slice of bread
+place sandwich on plate
+
+
+
+I = (B, H, T, L)
+i <- 1
+j <- 1
+WHILE i < 5
+	IF I[i] = 0
+		GL[j] <- I[i]
+		j <- j + 1
+
+SW <- B
+SW <- SW + 3*H
+SW <- SW + 3*T
+SW <- SW + L
+SW <- SW + B
+P <- SW

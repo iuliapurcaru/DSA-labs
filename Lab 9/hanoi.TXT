@@ -1,0 +1,21 @@
+#include <stdio.h>
+
+void hanoi(int n, char start, char end, char aux)
+{
+    if(n == 1)
+    {
+        printf("%c -> %c\n", start, end);
+        return;
+    }
+
+    hanoi(n-1, start, aux, end);
+    printf("%c -> %c\n", start, end);
+    hanoi(n-1, aux, end, start);
+}
+
+int main()
+{
+
+    hanoi(4, 'A', 'C', 'B');
+
+}

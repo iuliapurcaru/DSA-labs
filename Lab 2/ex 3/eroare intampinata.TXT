@@ -1,0 +1,1 @@
+functia de stergere nu functioneaza cum trebuie: sunt sterse din lista si elementele de dinaintea nodului indicat

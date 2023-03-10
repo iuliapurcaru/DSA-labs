@@ -1,0 +1,141 @@
+#include <limits.h>
+#include <stdio.h>
+
+#define nNodes 10
+
+typedef struct edge
+{
+    int src, dest, weight;
+} EDGE;
+
+EDGE edges[] =
+{
+    {0, 2, 19}, {1, 2, 3}, {1, 3, 16}, {2, 8, 8}, {3, 6, 10}, {3, 7, 4}, {4, 5, 11}, {4, 9, 14}, {5, 8, 9}, {5, 9, 11}, {6, 8, 7}, {7, 9, 6}
+};
+
+int nEdges = sizeof(edges)/sizeof(edges[0]);
+
+void init(int n, int a[][n])
+{
+    int i, j;
+
+    for(i = 0; i < n; i++)
+    {
+        for(j = 0; j < n; j++)
+        {
+            a[i][j] = 0;
+        }
+    }
+}
+
+void adj_matrix(int adj[][nNodes])
+{
+    int i, src, dest;
+
+    init(nNodes, adj);
+
+    for(i = 0; i < nEdges; i++)
+    {
+        src = edges[i].src;
+        dest = edges[i].dest;
+
+        adj[src][dest] = edges[i].weight;
+        adj[dest][src] = edges[i].weight;
+    }
+}
+
+void print_matrix(int n, int a[][n])
+{
+    int i, j;
+
+    printf("    ");
+    for(j = 0; j < n; j++)
+        printf("%d ", j);
+    printf("\n\n");
+
+    for(i = 0; i < n; i++)
+    {
+        printf("%d   ", i);
+        for(j = 0; j < n; j++)
+        {
+            printf("%d ", a[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int min_node(int key[], int mst_nodes[])
+{
+    int i, min = INT_MAX, min_index;
+
+    for(int i = 0; i < nNodes; i++)
+    {
+        if (mst_nodes[i] == 0 && key[i] < min)
+        {
+            min = key[i];
+            min_index = i;
+        }
+    }
+
+    return min_index;
+}
+
+void print_spanlist(int nodes[], int adj[][nNodes])
+{
+    int i, cost = 0;
+
+    printf("\nMinimum spanning tree:\n");
+    for(i = 1; i < nNodes; i++)
+    {
+        printf("%d - %d: %d\n", nodes[i], i, adj[i][nodes[i]]);
+        cost += adj[i][nodes[i]];
+    }
+    printf("Cost total: %d", cost);
+}
+
+void prim_alg(int adj[][nNodes])
+{
+
+    int nodes[nNodes], key[nNodes], mst_nodes[nNodes];
+    int i, src, dest;
+
+    for (int i = 0; i < nNodes; i++)
+    {
+        key[i] = INT_MAX;
+        mst_nodes[i] = 0;
+    }
+
+    key[0] = 0;
+    nodes[0] = -1;
+
+    for (i = 0; i < nNodes; i++)
+    {
+        src = min_node(key, mst_nodes);
+        mst_nodes[src] = 1;
+
+        for(dest = 0; dest < nNodes; dest++)
+        {
+            if (adj[src][dest] && mst_nodes[dest] == 0 && adj[src][dest] < key[dest])
+            {
+                nodes[dest] = src;
+                key[dest] = adj[src][dest];
+            }
+        }
+    }
+
+    print_spanlist(nodes, adj);
+}
+
+int main()
+{
+
+    int adj_m[nNodes][nNodes];
+
+    adj_matrix(adj_m);
+    printf("Matricea de adiacenta a grafului:\n");
+    print_matrix(nNodes, adj_m);
+
+    prim_alg(adj_m);
+    printf("\n");
+
+}

@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int max(int a, int b)
+{
+    if(a > b)
+        return a;
+    else return b;
+}
+
+int knapsack(int w, int weight[], int price[], int n)
+{
+    if(n == 0 || w == 0)
+        return 0;
+
+    if(weight[n - 1] > w)
+        return knapsack(w, weight, price, n - 1);
+    else
+        return max(price[n - 1] + knapsack(w - weight[n - 1], weight, price, n - 1), knapsack(w, weight, price, n - 1));
+}
+
+int main()
+{
+    int current_weight = 15, no_items = 5;
+    int weight[5] = {1, 1, 2, 4, 12};
+    int price[5] = {1, 2, 2, 10, 4};
+
+    printf("Capacitatea maxima: %d", knapsack(current_weight, weight, price, no_items));
+}

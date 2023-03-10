@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+void afisare(int v[], int i, int n)
+{
+    if(i >= n)
+        return;
+
+    printf("%d ", v[i]);
+
+    afisare(v, i+1, n);
+}
+
+int main()
+{
+    int n = 10, v[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+    printf("Vectorul v: ");
+    afisare(v, 0, n);
+}

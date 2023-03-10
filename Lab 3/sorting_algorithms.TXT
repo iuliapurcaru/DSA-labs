@@ -1,0 +1,266 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+void bubble_sort_ascending(int v[], int n)
+{
+    int i, j, aux;
+
+    for(i = 0; i < n-1; i++)
+    {
+        for(j = i+1; j <= n-1; j++)
+        {
+            if(v[i] > v[j])
+            {
+                aux = v[i];
+                v[i] = v[j];
+                v[j] = aux;
+            }
+        }
+    }
+}
+
+void selection_sort(int v[], int n)
+{
+    int i, j, min_index, temp;
+
+    for (i = 0; i < n-1; i++)
+    {
+        min_index = i;
+        for (j = i+1; j < n; j++)
+        {
+            if (v[j] < v[min_index])
+            {
+                min_index = j;
+            }
+        }
+
+        temp = v[min_index];
+        v[min_index] = v[i];
+        v[i] = temp;
+    }
+}
+
+void insertion_sort(int v[], int n)
+{
+    int i, j, temp;
+    for (i = 1; i < n; i++)
+    {
+        temp = v[i];
+        j = i - 1;
+
+        while ((j >= 0) && (v[j] > temp))
+        {
+            v[j + 1] = v[j];
+            j--;
+        }
+        v[j + 1] = temp;
+    }
+}
+
+void merge(int v[], int l, int r, int m)
+{
+    int i, j, k, n1 = m - l + 1, n2 = r - m;
+    int L[n1], R[n2];
+
+    for (i = 0; i < n1; i++)
+    {
+        L[i] = v[l + i];
+    }
+    for (j = 0; j < n2; j++)
+    {
+        R[j] = v[m + 1 + j];
+    }
+
+    i = 0;
+    j = 0;
+    k = l;
+    while ((i < n1) && (j < n2))
+    {
+        if (L[i] < R[j])
+        {
+            v[k] = L[i];
+            i++;
+        }
+        else
+        {
+            v[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1)
+    {
+        v[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2)
+    {
+        v[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void merge_sort(int v[], int l, int r)
+{
+    int m;
+
+    if (l < r)
+    {
+        m = l + (r - l) / 2;
+
+        merge_sort(v, l, m);
+        merge_sort(v, m + 1, r);
+
+        merge(v, l, r, m);
+    }
+}
+
+int partition(int v[], int l, int r)
+{
+    int i, temp, index = l - 1;
+
+    for(i = l; i <= r-1; i++)
+    {
+        if(v[i] < v[r])
+        {
+            index++;
+            temp = v[i];
+            v[i] = v[index];
+            v[index] = temp;
+
+        }
+    }
+    temp = v[r];
+    v[r] = v[index + 1];
+    v[index + 1] = temp;
+
+    return index + 1;
+}
+
+void quick_sort(int v[], int l, int r)
+{
+    int pivot_index;
+
+    if(l < r)
+    {
+        pivot_index = partition(v, l, r);
+        quick_sort(v, l, pivot_index - 1);
+        quick_sort(v, pivot_index +1, r);
+    }
+}
+
+int main()
+{
+
+    int a1[7] = {25, 1, 44, 56, 100, 9, 2};
+    int a2[7] = {6, 5, 3, 2, 8, 10, 9};
+    int a3[7] = {100, 67, 34, 22, 15, 10, 2};
+    clock_t begin, end;
+    double time_taken_1, time_taken_2, time_taken_3;
+
+//    // pentru bubble sort
+//
+//    printf("Bubble sort time:\n");
+//    begin = clock();
+//    bubble_sort_ascending(a1, 7);
+//    end = clock();
+//    time_taken_1 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    bubble_sort_ascending(a2, 7);
+//    end = clock();
+//    time_taken_2 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    bubble_sort_ascending(a3, 7);
+//    end = clock();
+//    time_taken_3 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    printf("a1: %f s\na2: %f s\na3: %f s\n\n", time_taken_1, time_taken_2, time_taken_3);
+
+//    // pentru selection sort
+//
+//    printf("Selection sort time:\n");
+//    begin = clock();
+//    selection_sort(a1, 7);
+//    end = clock();
+//    time_taken_1 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    selection_sort(a2, 7);
+//    end = clock();
+//    time_taken_2 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    selection_sort(a3, 7);
+//    end = clock();
+//    time_taken_3 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    printf("a1: %f s\na2: %f s\na3: %f s\n\n", time_taken_1, time_taken_2, time_taken_3);
+
+//     // pentru insertion sort
+//
+//    printf("Insertion sort time:\n");
+//    begin = clock();
+//    insertion_sort(a1, 7);
+//    end = clock();
+//    time_taken_1 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    insertion_sort(a2, 7);
+//    end = clock();
+//    time_taken_2 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    insertion_sort(a3, 7);
+//    end = clock();
+//    time_taken_3 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    printf("a1: %f s\na2: %f s\na3: %f s\n\n", time_taken_1, time_taken_2, time_taken_3);
+
+//    // pentru merge sort
+//
+//    printf("Merge sort time:\n");
+//    begin = clock();
+//    merge_sort(a1, 0, 6);
+//    end = clock();
+//    time_taken_1 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    merge_sort(a2, 0, 6);
+//    end = clock();
+//    time_taken_2 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    merge_sort(a3, 0, 6);
+//    end = clock();
+//    time_taken_3 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    printf("a1: %f s\na2: %f s\na3: %f s\n\n", time_taken_1, time_taken_2, time_taken_3);
+
+//    // pentru quick sort
+//
+//    printf("Quick sort time:\n");
+//    begin = clock();
+//    quick_sort(a1, 0, 6);
+//    end = clock();
+//    time_taken_1 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    quick_sort(a2, 0, 6);
+//    end = clock();
+//    time_taken_2 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    begin = clock();
+//    quick_sort(a3, 0, 6);
+//    end = clock();
+//    time_taken_3 = (double)(end - begin) / CLOCKS_PER_SEC;
+//
+//    printf("a1: %f s\na2: %f s\na3: %f s\n\n", time_taken_1, time_taken_2, time_taken_3);
+
+}
