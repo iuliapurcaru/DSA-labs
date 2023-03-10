@@ -1,0 +1,43 @@
+void insert(int data)
+{
+    NODE *temp_node = (NODE*)malloc(sizeof(NODE));
+    NODE *current, *parent;
+
+    temp_node->data = data;
+    temp_node->left = NULL;
+    temp_node->right = NULL;
+
+    if(root == NULL)
+    {
+        root = temp_node;
+    }
+    else
+    {
+        current = root;
+        parent = NULL;
+
+        while(1)
+        {
+            parent = current;
+
+            if(data < parent->data)
+            {
+                current = current->left;
+                if(current == NULL)
+                {
+                    parent->left = temp_node;
+                    return;
+                }
+            }
+            else
+            {
+                current = current->right;
+                if(current == NULL)
+                {
+                    parent->right = temp_node;
+                    return;
+                }
+            }
+        }
+    }
+}
